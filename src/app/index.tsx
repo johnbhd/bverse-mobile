@@ -1,31 +1,40 @@
-import { ImageBackground } from 'expo-image';
+import { ImageBackground, Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { getRandomVerse } from '@/utils/verse';
 
 export default function HomeScreen() {
+  const [currentVerse, setCurrentVerse] = useState(getRandomVerse);
+
   return (
       <ImageBackground
         source={require('@/assets/images/bg-app.jpg')}
         style={styles.screen}
         resizeMode="cover"
       >
+      <Image
+        source={require('@/assets/images/logo.png')}
+        style={styles.logo}
+        contentFit='contain'
+      />
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Bverse for you</Text>
         </View>
         <View style={styles.content}>
           <Text style={styles.verseText}>
-            "Blessed are those who hunger and thirst for righteousness, for they will be filled."
+            {currentVerse.text}
           </Text>
           <Text style={styles.verse}>
-            Matthew 5:6
+            {currentVerse.reference}
           </Text>
           <Pressable
             style={({ pressed }) => [
               styles.button,
               pressed && styles.buttonPressed,
             ]}
-            onPress={() => alert('hi')}
+            onPress={() => setCurrentVerse(getRandomVerse())}
           >
             <LinearGradient
               colors={['#5adaff', '#5468ff']}
@@ -55,6 +64,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 20,
     overflow: 'hidden',
+  },
+
+  logo: {
+    width: 60,
+    height: 60,
+    position: 'absolute',
+    right: 30,
+    top: 185,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 30,
+    zIndex: 1,
   },
   header: {
     backgroundColor: '#191e1b',
